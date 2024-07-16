@@ -1,0 +1,21 @@
+My thought for helping user to solve the user query:
+{{ thought }}
+
+{% if code %}
+This is the code that you can solve the current goal.
+```py
+{{ code }}
+```
+
+And these are the execution result of the code.
+{{ execution_result }}
+
+    {% if images %}
+        I generate some images for you, but only you can see these images.
+    {% endif %}
+{% endif %}
+
+{% if answer %}
+This is my answer for your query:
+{{ answer }}
+{% endif %}

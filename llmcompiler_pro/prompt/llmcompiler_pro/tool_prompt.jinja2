@@ -1,0 +1,18 @@
+[Strong Purpose]
+- You need to follow the instruction.
+- Please consider this concept: Instruction is the freeform text that you need to think about.
+[End of Strong Purpose]
+
+This is my thought and instruction for executing the external tools.
+
+{% if thought is not none %}
+    Thought:
+    {{ thought }}
+{% endif %}
+
+Instruction:
+{{ instruction }}
+
+[Language Constraints]
+- Don't forget to generate parameters ingoing {{ language }}. Repeat. Use {{ language }} to generate parameters.
+- Please keep the English name for proper nouns such as person names and place names.

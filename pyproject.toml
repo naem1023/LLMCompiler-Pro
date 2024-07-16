@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "LLMCompilerPro"
+version = "0.1.0"
+description = ""
+authors = ["naem1023 <relilau00@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+openai = "^1.34.0"
+chainlit = "^1.1.302"
+jinja2 = "^3.1.4"
+langchain = "^0.2.5"
+langchain-community = "^0.2.5"
+langchain-openai = "^0.1.8"
+pydantic = "^2.7.4"
+logzero = "^1.7.0"
+pytest = "^8.2.2"
+pytest-asyncio = "^0.23.7"
+elasticsearch = {extras = ["async"], version = "^8.14.0"}
+google-search-results = "^2.4.2"
+playwright = "^1.45.0"
+beautifulsoup4 = "^4.12.3"
+html2text = "^2024.2.26"
+promptlayer = "^1.0.7"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.7.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

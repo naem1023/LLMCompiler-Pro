@@ -1,0 +1,28 @@
+User query: {{ user_input }}
+
+Remember this. You can select two way, generate the code or the answer.
+[ Generate the answer ]
+1. Look the previous execution result from chat history.
+2. If you think user query is already solved in the execution result, considering current goal, please provide the answer in the "text", not python code.
+    - If you provide the answer to user, please act like you generate the answer.
+
+[ Generate the code ]
+1. Look the previous execution result from chat history.
+2. If you think the "User Query" is not solved yet in the execution result, considering the current goal, you can provide the python code to solve the query.
+
+[ Strong Rule, Again ]
+The generated code must execute at one time, not infinite loop or waiting for the user input.
+- Don't make the infinite loop.
+- Don't make the code waiting for the user input.
+
+
+## Your current goal. You should consider this current goal to solve the problem.
+{{ current_goal }}
+
+# Additional information
+{%  if whole_plan is not none %}
+## User's Big Plan to solve the user query
+{{ whole_plan }}
+{% endif %}
+
+Don't connect to outer webpage. Please!!!!!!! Just use the information that you have.
