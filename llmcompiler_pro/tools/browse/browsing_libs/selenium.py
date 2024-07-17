@@ -118,7 +118,7 @@ async def _navigate_to_page(page: Page, url: str) -> Response:
     :raises NavigationTimeoutError: If navigation to the page times out.
     """
     try:
-        response = await page.goto(url, timeout=10000, wait_until="load")
+        response = await page.goto(url, timeout=5000, wait_until="load")
         assert response is not None
         return response
     except Exception as e:

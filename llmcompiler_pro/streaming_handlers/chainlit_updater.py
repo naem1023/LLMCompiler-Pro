@@ -116,7 +116,7 @@ class LLMCompilerProTracer(AsyncBaseTracer):
         self.task_list = cl.TaskList()
         self.task_list.status = "Init"
 
-        self.planner_parser = StreamingGraphParser(tools=[])
+        self.planner_parser = StreamingGraphParser()
 
     def reset_cur_step(self):
         # Set Chainlit variables to default values

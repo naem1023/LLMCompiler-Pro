@@ -11,6 +11,7 @@ from langchain_core.messages.system import SystemMessage
 from langchain_openai import ChatOpenAI
 from logzero import logger
 
+from llmcompiler_pro.infra.openai import factory_openai_async_client
 from llmcompiler_pro.llmcompiler_pro.constants import END_OF_PLAN
 from llmcompiler_pro.llmcompiler_pro.output_parser import PlanParser
 from llmcompiler_pro.prompt_render.jinja2_render import Jinja2Render
@@ -24,7 +25,11 @@ class Planner:
         model_name: str,
     ):
         self.prompt_render = Jinja2Render("llmcompiler_pro/prompt")
-        self.llm = ChatOpenAI(model_name=model_name, streaming=True)
+        self.llm = ChatOpenAI(
+            model_name=model_name,
+            async_client=factory_openai_async_client().chat.completions,
+            streaming=True,
+        )
         self.output_parser = PlanParser()
 
     @staticmethod

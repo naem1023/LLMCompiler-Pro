@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  selenium:
+    platform: linux/amd64
+    image: selenium/hub
+    container_name: selenium
+    ports:
+      - "4442-4444:4442-4444"
+    shm_size: "2gb"
+    healthcheck:
+      test: "/opt/bin/check-grid.sh --host 0.0.0.0 --port 4444"
+      interval: 15s
+      timeout: 30s
+      retries: 5
+  chrome:
+    platform: linux/amd64
+    image: selenium/node-chrome
+    depends_on:
+      - selenium
+    shm_size: "2gb"
+    deploy:
+      replicas: 3
+    environment:
+      SE_EVENT_BUS_HOST: selenium
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+      SE_NODE_GRID_URL: http://localhost:4444
+#  rabbitmq:
+#    image: rabbitmq:3-management
+#    container_name: rabbitmq-stream
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"

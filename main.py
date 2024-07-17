@@ -1,9 +1,14 @@
 import chainlit as cl
+from chainlit.input_widget import Select
+from dotenv import load_dotenv
 
+from gui_demo.starter import demo_starter
 from llmcompiler_pro.llmcompiler_pro.llmcompiler_pro import LLMCompilerPro
 from llmcompiler_pro.schema.common import Language, LLMCompilerProRequest
 from llmcompiler_pro.streaming_handlers.chainlit_updater import LLMCompilerProTracer
 from llmcompiler_pro.tools import get_tools
+
+load_dotenv()
 
 
 class AIAssistantManager:
@@ -20,7 +25,7 @@ class AIAssistantManager:
         """
         self.assistant = None
 
-    async def initialize_assistant(self):
+    async def initialize_assistant(self, language: Language = Language.Korean):
         """
         Initializes the AI assistant with specific configurations.
 
@@ -30,7 +35,7 @@ class AIAssistantManager:
             max_replan=1,
             model_name="gpt-4o",
             session_id="123",
-            language=Language.Korean,
+            language=language,
         )
         self.assistant = LLMCompilerPro(
             configuration,
@@ -52,6 +57,11 @@ class AIAssistantManager:
         return response[-1]
 
 
+@cl.set_starters
+async def set_starters():
+    return demo_starter
+
+
 @cl.on_chat_start
 async def initiate_chat():
     """
@@ -59,8 +69,21 @@ async def initiate_chat():
 
     :return: None
     """
+    settings = await cl.ChatSettings(
+        [
+            Select(
+                id="Agent Language",
+                label="The primary language used in the tool",
+                values=[Language.English.value, Language.Korean.value],
+                initial_index=0,
+            )
+        ]
+    ).send()
+
+    language: Language = Language.from_value(settings.get("Agent Language"))
+
     manager = AIAssistantManager()
-    await manager.initialize_assistant()
+    await manager.initialize_assistant(language)
     cl.user_session.set("assistant_manager", manager)
 
 

@@ -23,6 +23,7 @@ playwright = "^1.45.0"
 beautifulsoup4 = "^4.12.3"
 html2text = "^2024.2.26"
 promptlayer = "^1.0.7"
+python-dotenv = "^1.0.1"
 
 
 [tool.poetry.group.dev.dependencies]

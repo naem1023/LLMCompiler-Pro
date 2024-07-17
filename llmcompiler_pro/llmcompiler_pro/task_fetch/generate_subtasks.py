@@ -1,6 +1,6 @@
 from openai.types.chat.chat_completion import ChatCompletion
 
-from llmcompiler_pro.infra.openai import factory_openai_client
+from llmcompiler_pro.infra.openai import factory_openai_async_client
 from llmcompiler_pro.prompt_render.jinja2_render import Jinja2Render
 from llmcompiler_pro.schema.common import Language
 
@@ -32,7 +32,7 @@ async def generate_subtasks(
 
     logger.debug(f"Messages: {messages}")
     logger.debug(f"Tools: {tools}")
-    return await factory_openai_client().chat.completions.create(
+    return await factory_openai_async_client().chat.completions.create(
         model=model_name,
         messages=messages,
         temperature=0.2,

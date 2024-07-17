@@ -5,6 +5,7 @@ from langchain_core.messages.system import SystemMessage
 from langchain_openai import ChatOpenAI
 from logzero import logger
 
+from llmcompiler_pro.infra.openai import factory_openai_async_client
 from llmcompiler_pro.prompt_render.jinja2_render import Jinja2Render
 from llmcompiler_pro.prompt_render.prompt_render_interface import PromptRenderInterface
 from llmcompiler_pro.schema.common import Language
@@ -13,7 +14,7 @@ from llmcompiler_pro.schema.common import Language
 def get_system_prompt(prompt_render: PromptRenderInterface, language: Language) -> str:
     return prompt_render.render(
         "llmcompiler_pro",
-        "join_system_prompt.jinja2",
+        "final_answer_system_prompt.jinja2",
         language=language,
     )
 
@@ -23,7 +24,7 @@ def get_user_prompt(
 ) -> str:
     return prompt_render.render(
         "llmcompiler_pro",
-        "join_user_prompt.jinja2",
+        "final_answer_user_prompt.jinja2",
         plan=plan,
         query=query,
         context=context,
@@ -48,6 +49,7 @@ def get_chat_messages(
 async def request_llm_generation(model_name, messages, callbacks):
     llm = ChatOpenAI(
         model_name=model_name,
+        async_client=factory_openai_async_client().chat.completions,
         streaming=True,
         model_kwargs={"response_format": {"type": "json_object"}},
     )

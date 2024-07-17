@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
 
+from llmcompiler_pro.schema.common import Language
 from llmcompiler_pro.schema.tool_calls import OpenAPIDocument
 
 
@@ -17,6 +18,7 @@ class Tool(ABC):
     description: str
     _tool_schema: Dict[str, Any]
     doc: Optional[OpenAPIDocument] = None
+    language: Language
 
     @property
     def tool_schema(self) -> Dict[str, Any]:

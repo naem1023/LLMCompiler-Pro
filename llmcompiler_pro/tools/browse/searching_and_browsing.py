@@ -3,20 +3,24 @@ import os
 from enum import Enum
 from typing import Dict, List, Tuple
 
-import dotenv
 import tiktoken
 from logzero import logger
 from serpapi.serp_api_client import SerpApiClient
 
-from llmcompiler_pro.schema.common import CostSetting
+from llmcompiler_pro.schema.common import (
+    CityEnum,
+    CostSetting,
+    GoogleDomainEnum,
+    Language,
+    LanguageHLEnum,
+    RegionEnum,
+)
 from llmcompiler_pro.streaming_handlers.chainlit_browsing_tool_updater import (
     BrowsingToolTracer,
 )
 
 from ..tool_interface import Tool
 from .browsing_libs.crawl import bulk_scrape_with_playwright
-
-dotenv.load_dotenv()
 
 SEGMENT_SIZE = 200
 OVERLAP = 50
@@ -26,9 +30,9 @@ encoder = tiktoken.encoding_for_model("gpt-4o")
 
 
 class ContentSize(int, Enum):
-    full = 10000
-    standard = 2500
-    brief = 800
+    large = 10000
+    medium = 2500
+    small = 800
 
 
 def limit_content_length(content: str, config: CostSetting) -> str:
@@ -88,20 +92,20 @@ def process_search_results(
 def stream_analysis_progress(
     links: List[str],
     summaries: List[Tuple[str, str]],
-    trackers: List[BrowsingToolTracer],
 ):
     """
     Stream the progress of analysis to the provided trackers.
 
     :param links: List of links to be analyzed.
     :param summaries: List of (link, summary) tuples.
-    :param trackers: List of tracker objects to stream the progress.
     """
+    trackers = [BrowsingToolTracer()]
     for link, (_, summary) in zip(links, summaries):
         for tracker in trackers or []:
             tracker.on_start()
             tracker.on_llm_new_token(
-                token=f"Analyzing content from: {link}\n{summary}", run_id=None
+                token=f"Currently searching for information through web browsing…\n- Analyzing content from: {link}\n- Summary: {summary}..",
+                run_id=None,
             )
             tracker.on_llm_end()
 
@@ -166,10 +170,7 @@ def create_fallback_results(
 
 
 async def analyze_web_content(
-    search_data: Dict,
-    k: int = 5,
-    is_test: bool = False,
-    trackers: List[BrowsingToolTracer] = None,
+    search_data: Dict, k: int = 5, is_test: bool = False, is_streaming: bool = True
 ) -> List[Dict]:
     """
     Analyze web content based on search results.
@@ -177,7 +178,6 @@ async def analyze_web_content(
     :param search_data: The raw search result dictionary.
     :param k: The number of top results to process.
     :param is_test: Flag to indicate if this is a test run.
-    :param trackers: List of objects to track the analysis progress.
     :return: A list of dictionaries containing the analyzed data.
     """
     featured_snippet = str(search_data.get("featured_snippet", ""))
@@ -186,7 +186,9 @@ async def analyze_web_content(
         return []
 
     links, summaries = process_search_results(search_data, k, is_test)
-    stream_analysis_progress(links, summaries, trackers)
+
+    if is_streaming:
+        stream_analysis_progress(links, summaries)
 
     fetched_content = await fetch_page_contents(links, k)
 
@@ -229,27 +231,30 @@ class WebContentAnalyzer(Tool):
             },
         },
     }
+    language: Language
 
-    async def __call__(self, q: str) -> List[Dict]:
+    async def __call__(self, q: str, is_streaming: bool = True) -> List[Dict]:
         """
         Execute the web content analysis tool.
 
         :param q: The search query to be analyzed.
         :return: A list of dictionaries containing the analyzed data.
         """
-        api_key = os.getenv("SEARCH_API_KEY")
+        api_key = os.getenv("SERP_API_KEY")
         if not api_key:
-            raise ValueError("Search API key is not set in the environment variables.")
+            raise ValueError("SERP_API_KEY is not set in the environment variables.")
 
-        MAX_RESULTS = 3
+        max_results = 3
         is_test = False
 
         search_params = {
             "q": q,
             "api_key": api_key,
-            "engine": "web_search",
-            "location": "Global",
-            "language": "en",
+            "engine": "google",
+            "location": CityEnum.from_language(self.language).value,
+            "gl": RegionEnum.from_language(self.language).value,
+            "hl": LanguageHLEnum.from_language(self.language).value,
+            "google_domain": GoogleDomainEnum.from_language(self.language).value,
             "safe": "active",
         }
 
@@ -259,7 +264,7 @@ class WebContentAnalyzer(Tool):
         search_data = search_client.get_dict()
 
         analysis_results: list[dict] = await analyze_web_content(
-            search_data, MAX_RESULTS, is_test, [BrowsingToolTracer()]
+            search_data, max_results, is_test, is_streaming
         )
 
         for result in analysis_results:
@@ -273,7 +278,11 @@ class WebContentAnalyzer(Tool):
 
 
 if __name__ == "__main__":
+    from dotenv import load_dotenv
+
+    load_dotenv()
     analyzer = WebContentAnalyzer()
+    analyzer.language = Language.Korean
 
     print(f"Tool Name: {analyzer.name}")
     print(f"Tool Description: {analyzer.description}")
@@ -281,7 +290,7 @@ if __name__ == "__main__":
 
     async def run_analyzer(tool):
         try:
-            results = await tool("Latest advancements in AI")
+            results = await tool("Latest advancements in AI", False)
             for result in results:
                 print(
                     f"Content: {result['content'][:100]}..."
