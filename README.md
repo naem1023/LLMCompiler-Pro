@@ -1,5 +1,5 @@
 # LLMCompiler-Pro
-_An extended project of the LLM Compiler paper, focusing on developing LLM-based Autonomous Agents._
+_An extended project of the [LLM Compiler paper](https://arxiv.org/abs/2312.04511), focusing on developing LLM-based Autonomous Agents._
 
 This project is an extension of the LLMCompiler research, developed with a focus on enhancing conversational capabilities, expanding the flexibility of plan decomposition, and broadening the concept of tools.
 
@@ -24,9 +24,18 @@ poetry install --with dev --no-roots
 make up
 ```
 ## Run Demo
+Before running the demo, prepare the ".env" file.
 ```shell
 chainlit run main.py
 ````
+
+### Change the primary language of tool
+If you want to change the primary language, you can change the language setting on the chainlit demo. 
+This allows you to change the language, region, and search engine type for the Google search engine or the final answer.
+![img.png](assets/setting_capture.png)
+
+## TODO
+- [ ] Implement it to run using a local LLM (This will be a challenging task as it requires implementing function calling and JSON processing with the local LLM).
 
 ## Contribution Guidelines
 Please make sure to use pre-commit hooks to ensure code quality and consistency.

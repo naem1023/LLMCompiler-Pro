@@ -9,6 +9,15 @@ class Language(Enum):
     Korean = "Korean"
     English = "English"
 
+    @classmethod
+    def from_value(cls, value: str):
+        if value == cls.Korean.value:
+            return cls.Korean
+        elif value == cls.English.value:
+            return cls.English
+        else:
+            raise ValueError(f"Unsupported language: {value}")
+
 
 class GoogleDomainEnum(str, Enum):
     kr = "google.co.kr"

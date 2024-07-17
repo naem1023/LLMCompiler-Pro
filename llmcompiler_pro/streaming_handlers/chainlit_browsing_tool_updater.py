@@ -72,7 +72,10 @@ class BrowsingToolTracer(BaseTracer):
 
     def on_start(self):
         self.reset_cur_step()
-        self.cur_step = cl.Step(name="Web Browsing Tool", type="tool")
+        # self.cur_step = cl.Step(name="Web Browsing Tool", type="tool")
+        self.cur_step = cl.Message(
+            content="Web Browsing Tool", author="Web Browsing Tool"
+        )
 
     def on_llm_start(
         self,
@@ -118,7 +121,6 @@ class BrowsingToolTracer(BaseTracer):
         Similar with BaseTracer._end_trace() but on_llm_end handle the end of the streaming.
         """
         assert self.cur_step is not None
-        # cl.run_sync(self.cur_step.stream_token(content, True))
         cl.run_sync(self.cur_step.send())
         self.reset_cur_step()
 

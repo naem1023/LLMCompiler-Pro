@@ -104,7 +104,8 @@ def stream_analysis_progress(
         for tracker in trackers or []:
             tracker.on_start()
             tracker.on_llm_new_token(
-                token=f"Analyzing content from: {link}\n{summary}", run_id=None
+                token=f"Currently searching for information through web browsing…\n- Analyzing content from: {link}\n- Summary: {summary}..",
+                run_id=None,
             )
             tracker.on_llm_end()
 

@@ -25,9 +25,9 @@ services:
       SE_EVENT_BUS_PUBLISH_PORT: 4442
       SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
       SE_NODE_GRID_URL: http://localhost:4444
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq-stream
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+#  rabbitmq:
+#    image: rabbitmq:3-management
+#    container_name: rabbitmq-stream
+#    ports:
+#      - "5672:5672"
+#      - "15672:15672"
