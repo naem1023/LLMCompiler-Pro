@@ -107,6 +107,8 @@ class Task:
         """
         # Find the tool using the tool name
         searched_tool: Tool | None = await find_tool(tool_response.function.name)
+        searched_tool.language = self.language
+
         if searched_tool is None:
             # Fail to find the tool using the tool name.
             # Run the fallback generation to regenerate the function calling response.

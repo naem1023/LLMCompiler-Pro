@@ -120,7 +120,7 @@ class TaskFetchingUnit:
             # Run each sub_tasks
             for _sub_task in task.sub_tasks:
                 res = await _sub_task()
-                assert res is not None
+                assert res is not None, f"Subtask({_sub_task}) result is None."
 
             # Join all the observations from the subtasks
             logger.debug(task.sub_tasks[0].observation)

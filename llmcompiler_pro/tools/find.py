@@ -5,23 +5,23 @@ from logzero import logger
 from llmcompiler_pro.schema.common import ModelType
 from llmcompiler_pro.schema.tool_calls import OpenAPIDocument
 
-from .api.apis import fetch_openai_api_specs, process_api_specs
+from .api.apis import get_openai_request_json, get_openapi_documents_and_tool_schema
 from .browse import WebContentAnalyzer
 from .tool_interface import Tool
 
 
 async def fetch_api_documentation(
-    identifier: str,
+    api_document_url: str,
 ) -> Dict[str, Dict[str, Dict | OpenAPIDocument]]:
     """
     Fetch and process API documentation for a given identifier.
 
-    :param identifier: The identifier for which to fetch API documentation.
+    :param api_document_url: The URL to fetch the API documentation from, like swagger or openapi.
     :return: A dictionary containing processed API documentation and tool schemas.
     """
-    raw_specs: list[Dict] = await fetch_openai_api_specs()
+    raw_specs: list[Dict] = await get_openai_request_json(api_document_url)
     logger.debug(f"Number of API specifications retrieved: {len(raw_specs)}")
-    return process_api_specs(raw_specs)
+    return get_openapi_documents_and_tool_schema(raw_specs)
 
 
 def construct_tool(
@@ -70,7 +70,9 @@ def construct_tool(
         raise ValueError(f"Model type {model_type} is not supported")
 
 
-async def find_tool(identifier: str) -> Optional[Tool]:
+async def find_tool(
+    identifier: str, api_document_url: str | None = None
+) -> Optional[Tool]:
     """
     Find and construct a Tool object based on the provided identifier.
 
@@ -78,18 +80,23 @@ async def find_tool(identifier: str) -> Optional[Tool]:
     the corresponding Tool object. If the identifier matches a special case
     (e.g., web search and browse), it returns a specialized tool.
 
-    :param identifier: The identifier of the tool to find.
+    :param identifier: The identifier of the tool to find, like api path or api name.
+    :param api_document_url: The URL to fetch the API documentation from, like swagger or openapi.
     :return: A Tool object if found, None otherwise.
     """
-    api_docs = await fetch_api_documentation(identifier)
-
     if identifier == WebContentAnalyzer.name:
         return WebContentAnalyzer()
 
-    if identifier in api_docs:
-        tool_spec = api_docs[identifier]["tool_schema"]
-        documentation = api_docs[identifier]["doc"]
-        return construct_tool(identifier, tool_spec, documentation)
+    # TODO: Implement the real tool finding logic.
+
+    if api_document_url:
+        api_docs = await fetch_api_documentation(api_document_url)
+
+        if identifier in api_docs:
+            tool_spec = api_docs[identifier]["tool_schema"]
+            documentation = api_docs[identifier]["doc"]
+            return construct_tool(identifier, tool_spec, documentation)
+    # If api_document_url is None and identifier isn't the WebContentAnalyzer, return None.
     else:
         logger.warning(f"No tool found for identifier: {identifier}")
         return None

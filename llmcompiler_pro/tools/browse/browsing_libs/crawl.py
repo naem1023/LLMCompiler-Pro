@@ -6,12 +6,10 @@ from logzero import logger
 from playwright.async_api import Browser, BrowserContext, async_playwright
 
 from .selenium import (  # Assuming the main function from selenium.py is now called fetch_page
-    fetch_page,
+    fetch_page_content,
 )
 from .selenium_exception import BrowserInitializationError
 from .utils import extract_images, get_og_image
-
-VALID_IMAGE_TYPES = ["jpg", "png", "webp"]
 
 
 async def scrape_page(
@@ -33,12 +31,12 @@ async def scrape_page(
     """
     logger.info(f"Initiating scrape for {target_url}")
     try:
-        content, markup = await fetch_page(
-            context=ctx,
-            url=target_url,
-            content_length=max_length,
-            agent_name=user_agent,
-            timeout=wait_time,
+        content, markup = await fetch_page_content(
+            ctx,
+            target_url,
+            max_length,
+            user_agent,
+            wait_time,
         )
         if content.strip():
             return target_url, content, markup

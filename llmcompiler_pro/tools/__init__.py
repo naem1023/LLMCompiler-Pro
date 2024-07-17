@@ -1,6 +1,6 @@
-from .browse import SearchAndBrowsingTool
+from .browse import WebContentAnalyzer
 
 
 def get_tools() -> list[dict]:
     """Get predefined tool schema for OpenAI."""
-    return [SearchAndBrowsingTool().tool_schema]
+    return [WebContentAnalyzer().tool_schema]

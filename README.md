@@ -15,13 +15,18 @@ This project is an extension of the LLMCompiler research, developed with a focus
 ![](assets/llmcompilerpro.png)
 
 ## Dependencies Installation
-Prepare the python 3.12 using conda, pyenv, or any other method.
+- Prepare the python 3.12 using conda, pyenv, or any other method.
+- Prepare the docker for docker-compose.
 
 ```shell
 pip install poetry
 poetry install --with dev --no-roots
+make up
 ```
-
+## Run Demo
+```shell
+chainlit run main.py
+````
 
 ## Contribution Guidelines
 Please make sure to use pre-commit hooks to ensure code quality and consistency.

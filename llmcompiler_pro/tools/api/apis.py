@@ -22,11 +22,8 @@ async def get_openai_request_json(url: str) -> list[dict]:
     return operations_list
 
 
-@DeprecationWarning
 def transform_function_name(name: str) -> str:
-    """Transform the function name to a valid OpenAI function name.
-    Deprecated: @samchon already transform all the name of functions in the OpenAPI document.
-    """
+    """Transform the function name to a valid OpenAI function name."""
     return name.replace(".", "-")
 
 

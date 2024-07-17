@@ -6,7 +6,7 @@ from urllib.parse import urljoin
 import html2text
 from bs4 import BeautifulSoup
 
-from llmcompiler_pro.tools.browse.browsing_libs.crawl import VALID_IMAGE_TYPES
+VALID_IMAGE_TYPES = ["jpg", "png", "webp"]
 
 
 def extract_image_data(content: str) -> list[tuple]:

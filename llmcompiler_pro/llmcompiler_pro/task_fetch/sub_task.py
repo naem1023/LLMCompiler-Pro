@@ -24,11 +24,14 @@ class SubTask:
     async def __call__(self, **kwargs) -> Any:
         """Run the tool and save the observation."""
         if self.tool is None:
+            logger.error(f"{self.id}, {self.args}, Tool is not provided.")
             return None
 
         result = None
         try:
-            logger.debug(f"Running subtask {self.id} with args: {self.args}")
+            logger.debug(
+                f"Running subtask {self.id} with args: {self.args}, \ntool={type(self.tool)}"
+            )
             response = await self.tool(**self.args)
             logger.debug(f"Subtask {self.id} response: {len(response)}")
             self.observation = response

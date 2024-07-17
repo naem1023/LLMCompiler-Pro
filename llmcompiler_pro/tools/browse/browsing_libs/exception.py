@@ -1,4 +1,3 @@
-import json
 from typing import Any, Dict
 
 
@@ -25,16 +24,6 @@ class CustomError(Exception):
         :return: A dictionary containing the error information.
         """
         return {"error_details": self.error_info}
-
-    def __str__(self) -> str:
-        """
-        Provide a string representation of the error.
-
-        This method serializes the error information to a JSON string.
-
-        :return: A JSON string representation of the error information.
-        """
-        return json.dumps(self.to_dict(), default=str)
 
     def __repr__(self) -> str:
         """

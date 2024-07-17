@@ -10,6 +10,70 @@ class Language(Enum):
     English = "English"
 
 
+class GoogleDomainEnum(str, Enum):
+    kr = "google.co.kr"
+    en = "google.com"
+
+    @classmethod
+    def from_language(cls, language: Language):
+        if language == Language.Korean:
+            return cls.kr
+        elif language == Language.English:
+            return cls.en
+        else:
+            raise ValueError(f"Unsupported language: {language}")
+
+
+class CityEnum(Enum):
+    seoul = "Seoul"
+    california = "California"
+
+    @classmethod
+    def from_language(cls, language: Language):
+        if language == Language.Korean:
+            return cls.seoul
+        elif language == Language.English:
+            return cls.california
+        else:
+            raise ValueError(f"Unsupported language: {language}")
+
+
+class LanguageHLEnum(str, Enum):
+    """
+    Supported Google HL Parameters Reference: https://serpapi.com/google-languages
+    """
+
+    ko = "ko"
+    en = "en"
+
+    @classmethod
+    def from_language(cls, language: Language):
+        if language == Language.Korean:
+            return cls.ko
+        elif language == Language.English:
+            return cls.en
+        else:
+            raise ValueError(f"Unsupported language: {language}")
+
+
+class RegionEnum(str, Enum):
+    """
+    Reference: https://serpapi.com/google-countries
+    """
+
+    kr = "kr"
+    us = "us"
+
+    @classmethod
+    def from_language(cls, language: Language):
+        if language == Language.Korean:
+            return cls.kr
+        elif language == Language.English:
+            return cls.us
+        else:
+            raise ValueError(f"Unsupported language: {language}")
+
+
 class LLMCompilerProRequest(BaseModel):
     # tools: Sequence[],
     model_name: str

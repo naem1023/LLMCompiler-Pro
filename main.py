@@ -1,9 +1,12 @@
 import chainlit as cl
+from dotenv import load_dotenv
 
 from llmcompiler_pro.llmcompiler_pro.llmcompiler_pro import LLMCompilerPro
 from llmcompiler_pro.schema.common import Language, LLMCompilerProRequest
 from llmcompiler_pro.streaming_handlers.chainlit_updater import LLMCompilerProTracer
 from llmcompiler_pro.tools import get_tools
+
+load_dotenv()
 
 
 class AIAssistantManager:
