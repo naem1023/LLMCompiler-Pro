@@ -11,6 +11,8 @@ This project is an extension of the LLMCompiler research, developed with a focus
 - Ensure users do not experience waiting by offering various streaming interactions.
 - Comprehensive refactoring and migration of deprecated modules from langchain and OpenAI.
 
+## Architecture
+![](assets/llmcompilerpro.png)
 
 ## Dependencies Installation
 Prepare the python 3.12 using conda, pyenv, or any other method.
