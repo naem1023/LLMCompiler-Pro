@@ -118,9 +118,17 @@ class TaskFetchingUnit:
             logger.debug(f"Generated subtasks for task {task.idx}")
 
             # Run each sub_tasks
-            for _sub_task in task.sub_tasks:
-                res = await _sub_task()
-                assert res is not None, f"Subtask({_sub_task}) result is None."
+            # TODO: Run parallely, not sequentially.
+            # for _sub_task in task.sub_tasks:
+            #     res = await _sub_task()
+            #     assert res is not None, f"Subtask({_sub_task}) result is None."
+
+            async def run_tasks(_task: Task):
+                coroutines = [_sub_task() for _sub_task in _task.sub_tasks]
+                _results = await asyncio.gather(*coroutines)
+                return _results
+
+            await run_tasks(task)
 
             # Join all the observations from the subtasks
             logger.debug(task.sub_tasks[0].observation)

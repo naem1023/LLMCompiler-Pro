@@ -14,7 +14,7 @@ from llmcompiler_pro.schema.common import Language
 def get_system_prompt(prompt_render: PromptRenderInterface, language: Language) -> str:
     return prompt_render.render(
         "llmcompiler_pro",
-        "join_system_prompt.jinja2",
+        "final_answer_system_prompt.jinja2",
         language=language,
     )
 
@@ -24,7 +24,7 @@ def get_user_prompt(
 ) -> str:
     return prompt_render.render(
         "llmcompiler_pro",
-        "join_user_prompt.jinja2",
+        "final_answer_user_prompt.jinja2",
         plan=plan,
         query=query,
         context=context,
