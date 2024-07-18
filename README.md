@@ -28,6 +28,8 @@ Before running the demo, prepare the ".env" file.
 ```shell
 chainlit run main.py
 ````
+https://youtu.be/f7-Qee6QkEk
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/f7-Qee6QkEk/0.jpg)](https://www.youtube.com/watch?v=f7-Qee6QkEk)
 
 ### Change the primary language of tool
 If you want to change the primary language, you can change the language setting on the chainlit demo. 
@@ -42,6 +44,14 @@ Please make sure to use pre-commit hooks to ensure code quality and consistency.
 ```shell
 pre-commit install -c .conf/.pre-commit.yaml
 ```
+## Confirmed Issue
+- There is an issue where the demo occasionally stops if the web browsing tool is used too extensively.
+- 
+## Limitations
+- Due to the dependency on Langchain for the streaming callback handler, the implementation of the Planner and Final Answer Generator, excluding the Task Fetching Unit, has become somewhat complex. It is necessary to reimplement these components without relying on Langchain.
+- The OpenAPI 3.0 documents, commonly known as Swagger documents, cannot be immediately migrated to tools. A related converter needs to be developed.
+- The speed of the Web Browsing Tool is somewhat slow, which affects the overall pipeline speed. Although this is a fundamental issue, I need to explore faster alternatives.
+- There is an inconvenience in pre-injecting language settings for the configurations used by the tools and the Final Answer Generator. I need to develop a way to automatically generate and apply these language settings.
 
 # Citations
 ```
