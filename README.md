@@ -2,6 +2,7 @@
 _An extended project of the [LLM Compiler paper](https://arxiv.org/abs/2312.04511), focusing on developing LLM-based Autonomous Agents._
 
 This project is an extension of the LLMCompiler research, developed with a focus on enhancing conversational capabilities, expanding the flexibility of plan decomposition, and broadening the concept of tools.
+If you want to see the original LLMCompiler, please visit the [LLMCompiler repository](https://github.com/SqueezeAILab/LLMCompiler).
 
 ## Objective
 - Enable integration with a wide range of APIs and tools beyond simple Python functions.
