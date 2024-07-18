@@ -28,14 +28,13 @@ Before running the demo, prepare the ".env" file.
 ```shell
 chainlit run main.py
 ````
-https://youtu.be/f7-Qee6QkEk
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/f7-Qee6QkEk/0.jpg)](https://www.youtube.com/watch?v=f7-Qee6QkEk)
+[![IMAGE ALT TEXT HERE](assets/screenshot_of_demo.png)](https://www.youtube.com/watch?v=f7-Qee6QkEk)
+Clik the Image to watch the demo video.
 
 ### Change the primary language of tool
 If you want to change the primary language, you can change the language setting on the chainlit demo. 
 This allows you to change the language, region, and search engine type for the Google search engine or the final answer.
 ![img.png](assets/setting_capture.png)
-
 ## TODO
 - [ ] Implement it to run using a local LLM (This will be a challenging task as it requires implementing function calling and JSON processing with the local LLM).
 
@@ -46,7 +45,6 @@ pre-commit install -c .conf/.pre-commit.yaml
 ```
 ## Confirmed Issue
 - There is an issue where the demo occasionally stops if the web browsing tool is used too extensively.
-- 
 ## Limitations
 - Due to the dependency on Langchain for the streaming callback handler, the implementation of the Planner and Final Answer Generator, excluding the Task Fetching Unit, has become somewhat complex. It is necessary to reimplement these components without relying on Langchain.
 - The OpenAPI 3.0 documents, commonly known as Swagger documents, cannot be immediately migrated to tools. A related converter needs to be developed.
