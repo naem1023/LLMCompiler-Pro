@@ -25,7 +25,7 @@ poetry install --with dev --no-roots
 make up
 ```
 ## Run Demo
-Before running the demo, prepare the ".env" file.
+Before running the demo, prepare the ".env" file. "Promptlayer API Key" isn't necessary.
 ```shell
 chainlit run main.py
 ````
