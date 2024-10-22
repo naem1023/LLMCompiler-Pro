@@ -106,6 +106,7 @@ class LLMCompilerPro:
 
         for i in range(self.max_replan):
             # Generate plan and start task fetching
+            logger.info(f"Language at the generate_plan_and_fetch: {self.language}")
             plan, tasks = await generate_plan_and_fetch(
                 self.planner,
                 user_input,
@@ -119,6 +120,7 @@ class LLMCompilerPro:
 
             self.update_agent_scraptchpad(tasks)
 
+            logger.info(f"Language at the generate_final_answer: {self.language}")
             res = await generate_final_answer(
                 self.model_name,
                 user_input,

@@ -21,7 +21,7 @@ If you want to see the original LLMCompiler, please visit the [LLMCompiler repos
 
 ```shell
 pip install poetry
-poetry install --with dev --no-roots
+poetry install --with dev --no-root
 make up
 ```
 ## Run Demo

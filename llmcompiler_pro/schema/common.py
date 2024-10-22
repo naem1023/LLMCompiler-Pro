@@ -88,7 +88,7 @@ class LLMCompilerProRequest(BaseModel):
     model_name: str
     max_replan: int
     session_id: str = Field(default=str(uuid.uuid4()))
-    language: Language = (Field(default=Language.Korean),)
+    language: Language = Field(default=Language.Korean)
     callbacks: list = (None,)
     browsing_tool_callbacks: list = (None,)
 

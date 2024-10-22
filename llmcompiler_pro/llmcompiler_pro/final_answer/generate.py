@@ -12,10 +12,11 @@ from llmcompiler_pro.schema.common import Language
 
 
 def get_system_prompt(prompt_render: PromptRenderInterface, language: Language) -> str:
+    logger.debug(f"Language at the system prompt for final answer: {language}")
     return prompt_render.render(
         "llmcompiler_pro",
         "final_answer_system_prompt.jinja2",
-        language=language,
+        language=language.value,
     )
 
 

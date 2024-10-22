@@ -258,6 +258,8 @@ class WebContentAnalyzer(Tool):
             "safe": "active",
         }
 
+        logger.info(f"Search params: {search_params}")
+
         analysis_config: CostSetting = CostSetting.large
 
         search_client = SerpApiClient(search_params, timeout=10)

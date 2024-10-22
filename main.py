@@ -31,6 +31,7 @@ class AIAssistantManager:
 
         :return: None
         """
+        print(f"Set language: {language}")
         configuration = LLMCompilerProRequest(
             max_replan=1,
             model_name="gpt-4o",
@@ -74,7 +75,7 @@ async def initiate_chat():
             Select(
                 id="Agent Language",
                 label="The primary language used in the tool",
-                values=[Language.English.value, Language.Korean.value],
+                values=[Language.Korean.value, Language.English.value],
                 initial_index=0,
             )
         ]
@@ -96,6 +97,9 @@ async def update_settings(settings):
     :return: None
     """
     print(f"Settings updated: {settings}")
+    manager = AIAssistantManager()
+    language: Language = Language.from_value(settings.get("Agent Language"))
+    await manager.initialize_assistant(language)
 
 
 @cl.on_message
